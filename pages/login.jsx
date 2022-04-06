@@ -150,7 +150,7 @@ export default function JoinOurTeam() {
                     <Heading
                         lineHeight={1.1}
                         fontSize={{ base: '3xl', sm: '4xl', md: '5xl', lg: '6xl' }}>
-                        Inscrit toi sur ton futur jeu de {' '}
+                        Connecte toi sur ton futur jeu de {' '}
                         <Text
                             as={'span'}
                             bgGradient="linear(to-r, red.400,pink.400)"
@@ -225,11 +225,11 @@ export default function JoinOurTeam() {
                             color={'gray.800'}
                             lineHeight={1.1}
                             fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}>
-                            Inscription
+                            Connexion
                             <Text
                                 as={'span'}
                                 bgGradient="linear(to-r, red.400,pink.400)"
-                                bgClip="text">
+                                bgClip="text">.
                             </Text>
                         </Heading>
                     </Stack>
