@@ -1,13 +1,27 @@
-import "../styles/globals.css";
-import { store } from "../src/store/store";
-import { Provider } from "react-redux";
+import '../styles/globals.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Navbar from '../components/Navbar'
+import { AuthContextProvider } from '../context/AuthContext'
+import { useRouter } from 'next/router'
+import ProtectedRoute from '../components/ProtectedRoute'
+
+const noAuthRequired = ['/', '/login', '/signup']
 
 function MyApp({ Component, pageProps }) {
-    return (
-        <Provider store={store}>
-            <Component {...pageProps} />
-        </Provider>
-    );
+  const router = useRouter()
+
+  return (
+    <AuthContextProvider>
+      <Navbar />
+      {noAuthRequired.includes(router.pathname) ? (
+        <Component {...pageProps} />
+      ) : (
+        <ProtectedRoute>
+          <Component {...pageProps} />
+        </ProtectedRoute>
+      )}
+    </AuthContextProvider>
+  )
 }
 
-export default MyApp;
+export default MyApp
