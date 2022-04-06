@@ -1,6 +1,41 @@
 import Head from "next/head";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteWord, initWords } from "../src/store/features/word/wordSlice";
+
+const BASE_URL = "https://pokeapi.co/api/v2/pokemon/?limit=100";
+
+const getWords = async () => {
+    const offset = Math.floor(Math.random() * 300) + 0;
+    const req = await fetch(BASE_URL + "&offset=" + offset);
+    const rep = await req.json();
+    return rep.results.map((x) => x.name);
+};
 
 export default function Home() {
+    const [isDataLoading, setIsDataLoading] = useState(true);
+    const [word, setWord] = useState("");
+
+    const dispatch = useDispatch();
+
+    const getChoosenOne = (words) => {
+        const index = Math.floor(Math.random() * words.length);
+        const candidateWord = words[index];
+        dispatch(deleteWord(candidateWord));
+        setWord(candidateWord);
+    };
+
+    useEffect(() => {
+        (async () => {
+            const words = await getWords();
+            dispatch(initWords(words));
+            getChoosenOne(words);
+
+            setIsDataLoading(false);
+        })();
+    }, []);
+    const words = useSelector((state) => state.words);
+
     return (
         <div>
             <Head>
@@ -13,6 +48,13 @@ export default function Home() {
                 <h1>TODO motus == copier https://www.tusmo.xyz/</h1>
                 <p>EN ANGLAIS CAR PAS API FR</p>
                 <p>API https://random-word-api.herokuapp.com/word?number=1</p>
+                <h2>{word}</h2>
+                <button onClick={() => getChoosenOne(words)}>New word</button>
+                <ul>
+                    {words.map((x) => (
+                        <li>{x}</li>
+                    ))}
+                </ul>
             </main>
         </div>
     );

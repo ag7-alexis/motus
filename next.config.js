@@ -4,8 +4,7 @@ const withPWA = require("next-pwa");
 const nextConfig = withPWA({
     pwa: {
         dest: "public",
-        register: true,
-        skipWaiting: true,
+        swSrc: "src/service-worker/service-worker.js",
     },
     reactStrictMode: true,
 });
