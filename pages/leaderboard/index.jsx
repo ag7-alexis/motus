@@ -41,7 +41,7 @@ export default function Leaderboard() {
         //  const db = firebase.firestore();
           // const citiesCol = collection(db, 'leaderboard').orderBy("score", "desc").limit(10);
           const params = collection(db, 'leaderboard');
-          const q = query( params, where("name", "==", user.email));
+          const q = query( params, where("name", "==", user.displayName));
           const qSnapshot = await getDocs(q);
           const qList = qSnapshot.docs.map(doc => doc.data());
          return qList;
