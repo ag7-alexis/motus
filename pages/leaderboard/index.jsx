@@ -12,6 +12,7 @@ import {
     Th,
     Td,
     TableCaption,
+    TableContainer,
 } from '@chakra-ui/react'
 import { isEmpty } from '@firebase/util';
 import { useAuth } from '../../context/AuthContext';
@@ -74,12 +75,13 @@ export default function Leaderboard() {
                 <p>AFFICHER X premier + AFFICHER CLASSEMENT DU CURRENT USER</p>
                 <p>AUTORIZE L ACCESS UNIQUEMENT AU JOUEUR AUTH</p> */}
 
+                <TableContainer className={styles.leaderboard}>
                 <Table  variant='simple' className={styles.table} mt={8}>
                         <Thead>
-                            <Tr color='gray.50' bg="gray.50">
-                                <Th>name</Th>
-                                <Th>score</Th>
-                                <Th>Position</Th>
+                            <Tr color='white' bg="gray.800">
+                                <Th color='white'>name</Th>
+                                <Th color='white'>score</Th>
+                                <Th color='white'>Position</Th>
                             </Tr>
                         </Thead>
                         <Tbody>
@@ -92,8 +94,8 @@ export default function Leaderboard() {
                             })}
                         </Tbody>
                         <Tfoot>
-                        <Tr color='gray.50' bg="gray.50">
-                                <Th>My score</Th>
+                        <Tr color='white' bg="gray.800">
+                                <Th color='white'>My score</Th>
                                 <Th></Th>
                                 <Th></Th>
                             </Tr>
@@ -104,6 +106,7 @@ export default function Leaderboard() {
                             </Tr>
                         </Tfoot>
                     </Table>
+                </TableContainer>
 
             </main>}
         </div>
