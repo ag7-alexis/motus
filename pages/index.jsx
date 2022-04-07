@@ -1,17 +1,47 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css';
-import MainLayout from '../src/layouts/MainLayout/MainLayout';
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import GameComponent from "../components/game.component";
+import NavbarComponent from "../components/navbar.component";
+import { StorageService } from "../services/storage.service";
 
 const Home = () => {
+  const router = useRouter();
+  const [gameNumber, setGameNumber] = useState(-1);
+  const [gameState, setGameState] = useState();
+
+  useEffect(() => {
+    // Delay until router is ready (JS fully loaded on page)
+    if (!router || !router.isReady) {
+      return;
+    }
+
+    const routerGameNumber = Number.parseInt(router.query.gameNumber);
+    const storageGameNumber = StorageService.getLastPlayedGame();
+    const gameNumberInUse = routerGameNumber || storageGameNumber;
+
+    setGameState(StorageService.getGameState(gameNumberInUse));
+    setGameNumber(gameNumberInUse);
+  }, [router]);
+
+  if (gameNumber == -1) {
+    return <p>Loading...</p>;
+  }
+
   return (
-    <div className={styles.container}>
-      <h1>Next Firebase Auth</h1>
-    </div>
-  )
-}
-Home.getLayout = function getLayout(Home) {
-  return <MainLayout>{Home}</MainLayout>;
+    <>
+      <NavbarComponent
+        title={`My Wordle - Game ${gameNumber}`}
+        showHistory={true}
+        showReturnToGame={false}
+      />
+
+      <Head>
+        <title>My Wordle - Game {gameNumber}</title>
+      </Head>
+      <GameComponent gameNumber={gameNumber} initialState={gameState} />
+    </>
+  );
 };
 
-export default Home
+export default Home;
