@@ -20,7 +20,7 @@ import {
     AlertIcon, Center, VStack, StackDivider
 } from '@chakra-ui/react';
 import { InputControl, SubmitButton } from 'formik-chakra-ui';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router';
 import { useAuth } from '../context/AuthContext';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -49,10 +49,10 @@ const avatars = [
         url: 'https://bit.ly/code-beast',
     },
 ];
+
 const LoginForm = () => {
     const router = useRouter()
     const { user, login, loginWithGoogle, auth } = useAuth();
-
     const [authError, setAuthError] = useState(null);
     function validateEmail(value) {
         let error
@@ -71,10 +71,16 @@ const LoginForm = () => {
     const ErrorMessage = (message) => {
         return <Alert status='error'><AlertIcon /> {message}</Alert>
     }
+    const CustomError = ({message}) => {
+        return <><Alert status='error' style={{borderRadius: '8px'}}>
+        <AlertIcon />
+        {message}
+    </Alert></>
+    }
     const onClickLoginWithGoogle = async () => {
         loginWithGoogle().then(
             () => {
-                router.push('/dashboard')
+                router.push('/')
             }
         ).catch(
             error => {
@@ -88,7 +94,7 @@ const LoginForm = () => {
                 await login(values.email, values.password)
                 router.push('/dashboard')
             } catch (err) {
-                setAuthError('auth/login-google-failed');
+                setAuthError(err.code);
             }
         }}
     >
@@ -141,19 +147,15 @@ const LoginForm = () => {
                     </Button>
                 </VStack>
 
-                {authError !== 'null' && authError == 'auth/wrong-password' ? <Alert status='error'>
-                    <AlertIcon />
-                    Mot de passe incorrect
-                </Alert> : authError == 'auth/invalid-email' ? <Alert status='error'>
-                    <AlertIcon />
-                    Email invalide
-                </Alert> : authError == 'auth/user-not-found' ? <Alert status='error'>
-                    <AlertIcon />
-                    Utilisateur non-trouvé
-                </Alert> : authError == 'auth/login-google-failed' ? <Alert status='error'><AlertIcon />
-                    Connexion avec Google echouée</Alert> : ''}
-                <Box mt={8}>
-
+                <Box mt={5}>
+                    {authError !== 'null' && authError == 'auth/wrong-password' ? <Alert status='error'>
+                        <AlertIcon />
+                        Mot de passe incorrect
+                    </Alert> : authError == 'auth/invalid-email' ? <CustomError message="Email invalide"></CustomError> : authError == 'auth/user-not-found' ? <Alert status='error'>
+                        <AlertIcon />
+                        Utilisateur non-trouvé
+                    </Alert> : authError == 'auth/login-google-failed' ? <Alert status='error'><AlertIcon />
+                        Connexion avec Google echouée</Alert> : ''}
                 </Box>
 
             </Form>

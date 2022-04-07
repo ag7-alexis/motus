@@ -74,7 +74,7 @@ const LoginForm = () => {
   const onClickLoginWithGoogle = async () => {
     loginWithGoogle().then(
       () => {
-        router.push('/dashboard')
+        router.push('/')
       }
     ).catch(
       error => {

@@ -15,10 +15,15 @@ import {
   useDisclosure,
   useColorModeValue,
   Stack,
+  Text
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { useAuth } from '../context/AuthContext';
-const Links = [{ label: 'Accueil', href: '/' }, { label: 'Régle du jeu', href: '#' }, { label: 'Connexion', href: '/login' }, { label: 'Inscription', href: '/signup' }];
+import { useRouter } from 'next/router'
+const LinksBase = [{ label: 'Accueil', href: '/' }, { label: 'Régle du jeu', href: '#' }];
+const LinksAuth = [{ label: 'Connexion', href: '/login' }, { label: 'Inscription', href: '/signup' }];
+
+
 const NavLink = ({ children, href }) => (
   <Link
     px={2}
@@ -36,8 +41,8 @@ const NavLink = ({ children, href }) => (
 
 export default function Simple() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { user, login, loginWithGoogle, auth } = useAuth();
-  console.log(user)
+  const { user, auth, logout } = useAuth();
+  const router = useRouter()
   return (
 
     <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4} style={{ zIndex: 999, background: 'white', position: 'absolute', width: '100%' }}>
@@ -55,13 +60,17 @@ export default function Simple() {
             as={'nav'}
             spacing={4}
             display={{ base: 'none', md: 'flex' }}>
-            {Links.map((link) => (
+            {LinksBase.map((link) => (
               <NavLink key={link.href} href={link.href}>{link.label}</NavLink>
             ))}
+            {user?.uid == null ? LinksAuth.map((link) => (
+              <NavLink key={link.href} href={link.href}>{link.label}</NavLink>
+            )) : ''}
           </HStack>
         </HStack>
-        <Flex alignItems={'center'}>
+        {user && user.uuid !== 'null' ? <Flex alignItems={'center'}>
           <Menu>
+          <p>{user.dispayName}</p>
             <MenuButton
               as={Button}
               rounded={'full'}
@@ -76,19 +85,24 @@ export default function Simple() {
               />
             </MenuButton>
             <MenuList>
-              <MenuItem>Link 1</MenuItem>
-              <MenuItem>Link 2</MenuItem>
-              <MenuDivider />
-              <MenuItem>Link 3</MenuItem>
+              <Text ml={3} fontSize='md'>Hello  <span style={{color: '#ED64A6'}}>{user.displayName}</span></Text>
+              <MenuItem>
+                <Link onClick={() => {
+                  logout()
+                  router.push('/login')
+                }}>Se deconnecter</Link>
+              </MenuItem>
             </MenuList>
           </Menu>
-        </Flex>
+        </Flex> : ''}
+
       </Flex>
 
       {isOpen ? (
         <Box pb={4} display={{ md: 'none' }}>
+
           <Stack as={'nav'} spacing={4}>
-            {Links.map((link) => (
+            {LinksBase.map((link) => (
               <NavLink key={link}>{link}</NavLink>
             ))}
           </Stack>
