@@ -17,15 +17,15 @@ const KeyboardComponent: FC<KeyboardComponentProps> = ({
   deleteHandler
 }) => {
   const QWERTY_ROW_ONE = useMemo<Array<string>>(
-    () => "QWERTYUIOP".split(""),
+    () => "AZERTYUIOP".split(""),
     []
   );
   const QWERTY_ROW_TWO = useMemo<Array<string>>(
-    () => "ASDFGHJKL".split(""),
+    () => "QSDFGHJKLM".split(""),
     []
   );
   const QWERTY_ROW_THREE = useMemo<Array<string>>(
-    () => "ZXCVBNM".split(""),
+    () => "WXCVBN".split(""),
     []
   );
 
