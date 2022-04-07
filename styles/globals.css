@@ -3,11 +3,12 @@
 :root {
   --colour-dark: #121213;
   --colour-dark-grey: #3a3a3c;
-  --colour-light-grey: #818384;
+  --colour-light-grey: #E7ECEF;
   --colour-white: #f1f1f1;
-  --colour-yellow: #b59f3b;
-  --colour-green: #538d4e;
+  --colour-yellow: #F0F561;
+  --colour-green: #84C318;
   --colour-blue: #0d6efd;
+  --colour-incorrect: #E44839;
 }
 
 * {
@@ -89,8 +90,9 @@ td {
 }
 
 .top {
-  width: 100%;
+  width: 40%;
   margin-top: 1rem;
+  min-width: 350px;
   text-align: center;
 }
 
@@ -115,13 +117,17 @@ td {
 }
 
 .tile {
+  border-radius: 12px;
   min-width: 53px;
   min-height: 53px;
-  border: 2px solid var(--colour-dark-grey);
   margin: 0.25rem;
   font-size: 1.5rem;
   font-weight: bold;
   padding-top: 0.5rem;
+  border: unset;
+  box-shadow: 0px 10px 40px rgba(41, 41, 48, 0.04);
+
+  background-color: white;
 }
 
 .correct {
@@ -135,7 +141,7 @@ td {
 }
 
 .incorrect {
-  background: var(--colour-dark-grey) !important;
+  background: var(--colour-incorrect) !important;
   border: none;
 }
 
@@ -176,6 +182,7 @@ td {
   cursor: pointer;
   width: 48px;
   height: 48px;
+
 }
 
 .alert {
@@ -200,7 +207,12 @@ td {
   background: #383d41;
   color: #e2e3e5;
 }
-
+.bottom > div > input{
+  background:transparent;
+  padding: 5px 20px;
+  border-radius: 8px;
+  background: rgb(245, 243, 244);
+}
 /* Phones/Tablets */
 @media (max-width: 600px) {
   .top {

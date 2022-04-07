@@ -1,0 +1,9 @@
+.gameContainer{
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    .top{
+        width: 40%;
+        min-width: 350px;
+    }
+}

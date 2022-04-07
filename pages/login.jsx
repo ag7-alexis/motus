@@ -71,11 +71,11 @@ const LoginForm = () => {
     const ErrorMessage = (message) => {
         return <Alert status='error'><AlertIcon /> {message}</Alert>
     }
-    const CustomError = ({message}) => {
-        return <><Alert status='error' style={{borderRadius: '8px'}}>
-        <AlertIcon />
-        {message}
-    </Alert></>
+    const CustomError = ({ message }) => {
+        return <><Alert status='error' style={{ borderRadius: '8px' }}>
+            <AlertIcon />
+            {message}
+        </Alert></>
     }
     const onClickLoginWithGoogle = async () => {
         loginWithGoogle().then(

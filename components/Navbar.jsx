@@ -45,7 +45,7 @@ export default function Simple() {
   const router = useRouter()
   return (
 
-    <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4} style={{ zIndex: 999, background: 'white', position: 'absolute', width: '100%' }}>
+    <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4} style={{ zIndex: 999, position: 'relative',background: 'white', width: '100%' }}>
       <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
         <IconButton
           size={'md'}
@@ -70,7 +70,7 @@ export default function Simple() {
         </HStack>
         {user && user.uuid !== 'null' ? <Flex alignItems={'center'}>
           <Menu>
-          <p>{user.dispayName}</p>
+            <p>{user.dispayName}</p>
             <MenuButton
               as={Button}
               rounded={'full'}
@@ -85,7 +85,7 @@ export default function Simple() {
               />
             </MenuButton>
             <MenuList>
-              <Text ml={3} fontSize='md'>Hello  <span style={{color: '#ED64A6'}}>{user.displayName}</span></Text>
+              <Text ml={3} fontSize='md'>Hello  <span style={{ color: '#ED64A6' }}>{user.displayName}</span></Text>
               <MenuItem>
                 <Link onClick={() => {
                   logout()
