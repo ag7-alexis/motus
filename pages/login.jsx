@@ -173,7 +173,7 @@ export default function JoinOurTeam() {
                     <Heading
                         lineHeight={1.1}
                         fontSize={{ base: '3xl', sm: '4xl', md: '5xl', lg: '6xl' }}>
-                        Connecte toi sur ton futur jeu de {' '}
+                        Connecte toi sur ton jeu de {' '}
                         <Text
                             as={'span'}
                             bgGradient="linear(to-r, red.400,pink.400)"
