@@ -23,6 +23,7 @@ import { InputControl, SubmitButton } from 'formik-chakra-ui';
 import { useState } from 'react'
 import { useRouter } from 'next/router';
 import { useAuth } from '../context/AuthContext'
+import MainLayout from '../src/layouts/MainLayout/MainLayout';
 const avatars = [
   {
     name: 'Ryan Florence',
@@ -73,7 +74,7 @@ const LoginForm = () => {
   const onClickLoginWithGoogle = async () => {
     loginWithGoogle().then(
       () => {
-        router.push('/dashboard')
+        router.push('/')
       }
     ).catch(
       error => {
@@ -161,7 +162,7 @@ const LoginForm = () => {
   </Formik>
 }
 
-export default function JoinOurTeam() {
+export default function Signup() {
   return (
     <Box position={'relative'}>
       <Container
@@ -269,7 +270,9 @@ export default function JoinOurTeam() {
     </Box>
   );
 }
-
+Signup.getLayout = function getLayout(Signup) {
+  return <MainLayout>{Signup}</MainLayout>;
+};
 export const Blur = (props) => {
   return (
     <Icon

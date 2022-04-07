@@ -20,9 +20,13 @@ import {
     AlertIcon, Center, VStack, StackDivider
 } from '@chakra-ui/react';
 import { InputControl, SubmitButton } from 'formik-chakra-ui';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router';
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../context/AuthContext';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { FcGoogle } from 'react-icons/fc';
+import * as Yup from "yup";
+import MainLayout from '../src/layouts/MainLayout/MainLayout';
 const avatars = [
     {
         name: 'Ryan Florence',
@@ -45,13 +49,10 @@ const avatars = [
         url: 'https://bit.ly/code-beast',
     },
 ];
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { FcGoogle } from 'react-icons/fc';
-import * as Yup from "yup";
+
 const LoginForm = () => {
     const router = useRouter()
     const { user, login, loginWithGoogle, auth } = useAuth();
-
     const [authError, setAuthError] = useState(null);
     function validateEmail(value) {
         let error
@@ -70,10 +71,16 @@ const LoginForm = () => {
     const ErrorMessage = (message) => {
         return <Alert status='error'><AlertIcon /> {message}</Alert>
     }
+    const CustomError = ({message}) => {
+        return <><Alert status='error' style={{borderRadius: '8px'}}>
+        <AlertIcon />
+        {message}
+    </Alert></>
+    }
     const onClickLoginWithGoogle = async () => {
         loginWithGoogle().then(
             () => {
-                router.push('/dashboard')
+                router.push('/')
             }
         ).catch(
             error => {
@@ -87,7 +94,7 @@ const LoginForm = () => {
                 await login(values.email, values.password)
                 router.push('/dashboard')
             } catch (err) {
-                setAuthError('auth/login-google-failed');
+                setAuthError(err.code);
             }
         }}
     >
@@ -140,19 +147,15 @@ const LoginForm = () => {
                     </Button>
                 </VStack>
 
-                {authError !== 'null' && authError == 'auth/wrong-password' ? <Alert status='error'>
-                    <AlertIcon />
-                    Mot de passe incorrect
-                </Alert> : authError == 'auth/invalid-email' ? <Alert status='error'>
-                    <AlertIcon />
-                    Email invalide
-                </Alert> : authError == 'auth/user-not-found' ? <Alert status='error'>
-                    <AlertIcon />
-                    Utilisateur non-trouvé
-                </Alert> : authError == 'auth/login-google-failed' ? <Alert status='error'><AlertIcon />
-                    Connexion avec Google echouée</Alert>: ''}
-                <Box mt={8}>
-
+                <Box mt={5}>
+                    {authError !== 'null' && authError == 'auth/wrong-password' ? <Alert status='error'>
+                        <AlertIcon />
+                        Mot de passe incorrect
+                    </Alert> : authError == 'auth/invalid-email' ? <CustomError message="Email invalide"></CustomError> : authError == 'auth/user-not-found' ? <Alert status='error'>
+                        <AlertIcon />
+                        Utilisateur non-trouvé
+                    </Alert> : authError == 'auth/login-google-failed' ? <Alert status='error'><AlertIcon />
+                        Connexion avec Google echouée</Alert> : ''}
                 </Box>
 
             </Form>
@@ -160,7 +163,7 @@ const LoginForm = () => {
     </Formik>
 }
 
-export default function JoinOurTeam() {
+export default function Login() {
     return (
         <Box position={'relative'}>
             <Container
@@ -173,7 +176,7 @@ export default function JoinOurTeam() {
                     <Heading
                         lineHeight={1.1}
                         fontSize={{ base: '3xl', sm: '4xl', md: '5xl', lg: '6xl' }}>
-                        Connecte toi sur ton futur jeu de {' '}
+                        Connecte toi sur ton jeu de {' '}
                         <Text
                             as={'span'}
                             bgGradient="linear(to-r, red.400,pink.400)"
@@ -263,11 +266,16 @@ export default function JoinOurTeam() {
                 position={'absolute'}
                 top={-10}
                 left={-10}
-                style={{ filter: 'blur(70px)' }}
+                style={{ filter: 'blur(70px)', zIndex: 10 }}
+
             />
         </Box>
     );
 }
+
+Login.getLayout = function getLayout(Login) {
+    return <MainLayout>{Login}</MainLayout>;
+};
 
 export const Blur = (props) => {
     return (
