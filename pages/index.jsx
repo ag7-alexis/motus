@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import styles from '../styles/Home.module.css';
+import MainLayout from '../src/layouts/MainLayout/MainLayout';
 
 const Home = () => {
   return (
@@ -9,5 +10,8 @@ const Home = () => {
     </div>
   )
 }
+Home.getLayout = function getLayout(Home) {
+  return <MainLayout>{Home}</MainLayout>;
+};
 
 export default Home

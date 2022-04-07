@@ -22,7 +22,11 @@ import {
 import { InputControl, SubmitButton } from 'formik-chakra-ui';
 import { useState } from 'react'
 import { useRouter } from 'next/router';
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../context/AuthContext';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { FcGoogle } from 'react-icons/fc';
+import * as Yup from "yup";
+import MainLayout from '../src/layouts/MainLayout/MainLayout';
 const avatars = [
     {
         name: 'Ryan Florence',
@@ -45,9 +49,6 @@ const avatars = [
         url: 'https://bit.ly/code-beast',
     },
 ];
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { FcGoogle } from 'react-icons/fc';
-import * as Yup from "yup";
 const LoginForm = () => {
     const router = useRouter()
     const { user, login, loginWithGoogle, auth } = useAuth();
@@ -150,7 +151,7 @@ const LoginForm = () => {
                     <AlertIcon />
                     Utilisateur non-trouvé
                 </Alert> : authError == 'auth/login-google-failed' ? <Alert status='error'><AlertIcon />
-                    Connexion avec Google echouée</Alert>: ''}
+                    Connexion avec Google echouée</Alert> : ''}
                 <Box mt={8}>
 
                 </Box>
@@ -160,7 +161,7 @@ const LoginForm = () => {
     </Formik>
 }
 
-export default function JoinOurTeam() {
+export default function Login() {
     return (
         <Box position={'relative'}>
             <Container
@@ -263,11 +264,16 @@ export default function JoinOurTeam() {
                 position={'absolute'}
                 top={-10}
                 left={-10}
-                style={{ filter: 'blur(70px)' }}
+                style={{ filter: 'blur(70px)', zIndex: 10 }}
+
             />
         </Box>
     );
 }
+
+Login.getLayout = function getLayout(Login) {
+    return <MainLayout>{Login}</MainLayout>;
+};
 
 export const Blur = (props) => {
     return (
