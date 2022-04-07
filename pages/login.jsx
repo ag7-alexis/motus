@@ -17,7 +17,7 @@ import {
     FormLabel,
     FormErrorMessage,
     Alert,
-    AlertIcon
+    AlertIcon, Center, VStack, StackDivider
 } from '@chakra-ui/react';
 import { InputControl, SubmitButton } from 'formik-chakra-ui';
 import { useState } from 'react'
@@ -46,10 +46,11 @@ const avatars = [
     },
 ];
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { FcGoogle } from 'react-icons/fc';
 import * as Yup from "yup";
 const LoginForm = () => {
     const router = useRouter()
-    const { user, login, auth } = useAuth();
+    const { user, login, loginWithGoogle, auth } = useAuth();
 
     const [authError, setAuthError] = useState(null);
     function validateEmail(value) {
@@ -69,6 +70,16 @@ const LoginForm = () => {
     const ErrorMessage = (message) => {
         return <Alert status='error'><AlertIcon /> {message}</Alert>
     }
+    const onClickLoginWithGoogle = async () => {
+        loginWithGoogle().then(
+            () => {
+                router.push('/dashboard')
+            }
+        ).catch(
+            error => {
+                alert(error)
+            })
+    }
     return <Formik
         initialValues={{ email: '' }}
         onSubmit={async (values, actions) => {
@@ -76,7 +87,7 @@ const LoginForm = () => {
                 await login(values.email, values.password)
                 router.push('/dashboard')
             } catch (err) {
-                setAuthError(err.code);
+                setAuthError('auth/login-google-failed');
             }
         }}
     >
@@ -103,21 +114,32 @@ const LoginForm = () => {
                         )}
                     </Field>
                 </Stack>
+                <VStack
+                    divider={<StackDivider borderColor='gray.200' />}
+                    spacing={4}
+                    align='stretch'
+                >
+                    <Button
+                        type="submit"
+                        fontFamily={'heading'}
+                        mt={8}
+                        w={'full'}
+                        bgGradient="linear(to-r, red.400,pink.400)"
+                        color={'white'}
+                        _hover={{
+                            bgGradient: 'linear(to-r, red.400,pink.400)',
+                            boxShadow: 'xl',
+                        }}
+                        isLoading={props.isSubmitting}>
+                        Connexion
+                    </Button>
+                    <Button w={'full'} variant={'outline'} leftIcon={<FcGoogle />} onClick={onClickLoginWithGoogle}>
+                        <Center>
+                            <Text>Se connecter avec Google</Text>
+                        </Center>
+                    </Button>
+                </VStack>
 
-                <Button
-                    type="submit"
-                    fontFamily={'heading'}
-                    mt={8}
-                    w={'full'}
-                    bgGradient="linear(to-r, red.400,pink.400)"
-                    color={'white'}
-                    _hover={{
-                        bgGradient: 'linear(to-r, red.400,pink.400)',
-                        boxShadow: 'xl',
-                    }}
-                    isLoading={props.isSubmitting}>
-                    Connexion
-                </Button>
                 {authError !== 'null' && authError == 'auth/wrong-password' ? <Alert status='error'>
                     <AlertIcon />
                     Mot de passe incorrect
@@ -127,7 +149,8 @@ const LoginForm = () => {
                 </Alert> : authError == 'auth/user-not-found' ? <Alert status='error'>
                     <AlertIcon />
                     Utilisateur non-trouvé
-                </Alert> : ''}
+                </Alert> : authError == 'auth/login-google-failed' ? <Alert status='error'><AlertIcon />
+                    Connexion avec Google echouée</Alert>: ''}
                 <Box mt={8}>
 
                 </Box>
