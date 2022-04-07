@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import GameComponent from "../components/game.component";
 import NavbarComponent from "../components/navbar.component";
 import { StorageService } from "../services/storage.service";
-
+import MainLayout from '../src/layouts/MainLayout/MainLayout';
 const Home = () => {
   const router = useRouter();
   const [gameNumber, setGameNumber] = useState(-1);
@@ -30,18 +30,21 @@ const Home = () => {
 
   return (
     <>
-      <NavbarComponent
+      {/* <NavbarComponent
         title={`My Wordle - Game ${gameNumber}`}
         showHistory={true}
         showReturnToGame={false}
-      />
+      /> */}
 
       <Head>
         <title>My Wordle - Game {gameNumber}</title>
       </Head>
+
       <GameComponent gameNumber={gameNumber} initialState={gameState} />
     </>
   );
 };
-
 export default Home;
+Home.getLayout = function getLayout(Home) {
+  return <MainLayout>{Home}</MainLayout>;
+};
