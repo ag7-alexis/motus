@@ -50,10 +50,10 @@ header h1 {
   color: var(--colour-light-grey);
 }
 
-a,
+/* a,
 a:visited {
   color: var(--colour-white);
-}
+} */
 
 td,
 th {
