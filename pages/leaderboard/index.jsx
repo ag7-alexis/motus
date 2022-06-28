@@ -32,7 +32,7 @@ export default function Leaderboard() {
       //  const db = firebase.firestore();
         // const citiesCol = collection(db, 'leaderboard').orderBy("score", "desc").limit(10);
         const params = collection(db, 'leaderboard');
-        const q = query( params, orderBy("score", "desc"), limit(10));
+        const q = query( params, orderBy("Score", "desc"), limit(10));
         const qSnapshot = await getDocs(q);
         const qList = qSnapshot.docs.map(doc => doc.data());
        return qList;
@@ -87,8 +87,8 @@ export default function Leaderboard() {
                         <Tbody>
                             {infoUser.map((user) => {
                                 return <Tr key={user.name}>
-                                    <Td>{user.name}</Td>
-                                    <Td>{user.score}</Td>
+                                    <Td>{user.Name}</Td>
+                                    <Td>{user.Score}</Td>
                                     <Td>{infPosition++}</Td>
                                 </Tr>
                             })}
